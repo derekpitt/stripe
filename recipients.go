@@ -20,12 +20,12 @@ const (
 // For more details see https://stripe.com/docs/api#create_recipient and https://stripe.com/docs/api#update_recipient.
 type RecipientParams struct {
 	Params
-	Name                      string
-	Type                      RecipientType
-	TaxId, Token, Email, Desc string
-	Bank                      *BankAccountParams
-	Card                      *CardParams
-	DefaultCard               string
+	Name                                        string
+	Type                                        RecipientType
+	TaxId, Token, BankAccountToken, Email, Desc string
+	Bank                                        *BankAccountParams
+	Card                                        *CardParams
+	DefaultCard                                 string
 }
 
 // RecipientListParams is the set of parameters that can be used when listing recipients.
@@ -88,7 +88,9 @@ func (c *RecipientClient) Create(params *RecipientParams) (*Recipient, error) {
 		"type": {string(params.Type)},
 	}
 
-	if params.Bank != nil {
+	if len(params.BankAccountToken) > 0 {
+		body.Add("bank_account", params.BankAccountToken)
+	} else if params.Bank != nil {
 		params.Bank.appendTo(body)
 	}
 
