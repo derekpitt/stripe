@@ -54,6 +54,7 @@ type Recipient struct {
 	Name        string            `json:"name"`
 	Cards       *CardList         `json:"cards"`
 	DefaultCard *Card             `json:"default_card"`
+	Verified    bool              `json:"verified"`
 }
 
 // BankAccount represents a Stripe bank account.
